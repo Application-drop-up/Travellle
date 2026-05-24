@@ -47,6 +47,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /plans/{plan_id}/pins:
+    post:
+      tags:
+        - pins
+      summary: Add a pin to a plan
+      operationId: createPin
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target plan ID
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePinRequest'
+      responses:
+        '201':
+          description: Pin added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pin'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Plan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /plans/{share_token}:
     get:
       tags:
