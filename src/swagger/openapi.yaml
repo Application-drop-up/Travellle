@@ -62,6 +62,97 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /pins/{pin_id}/notes/{note_id}:
+    patch:
+      tags:
+        - notes
+      summary: Update a note
+      operationId: updateNote
+      parameters:
+        - name: pin_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target pin ID
+          example: "660e8400-e29b-41d4-a716-446655440001"
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target note ID
+          example: "770e8400-e29b-41d4-a716-446655440002"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNoteRequest'
+      responses:
+        '200':
+          description: Note updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Pin or Note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - notes
+      summary: Delete a note from a pin
+      operationId: deleteNote
+      parameters:
+        - name: pin_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target pin ID
+          example: "660e8400-e29b-41d4-a716-446655440001"
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target note ID
+          example: "770e8400-e29b-41d4-a716-446655440002"
+      responses:
+        '204':
+          description: Note deleted successfully
+        '404':
+          description: Pin or Note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     Error:
