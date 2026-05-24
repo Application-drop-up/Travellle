@@ -1,0 +1,34 @@
+'feat':
+  - head-branch: ['^feat/', '^feature/']
+
+'chore':
+  - head-branch: ['^chore/']
+
+'fix':
+  - head-branch: ['^fix/', '^bugfix/', '^hotfix/']
+
+'docs':
+  - head-branch: ['^docs/']
+  - changed-files:
+    - any-glob-to-any-file: ['**/*.md']
+
+'ci':
+  - head-branch: ['^ci/', '^feat/ci-']
+  - changed-files:
+    - any-glob-to-any-file: ['.github/workflows/*.yml']
+
+'docker':
+  - head-branch: ['.*docker.*']
+  - changed-files:
+    - any-glob-to-any-file:
+        - 'infra/docker/**'
+        - 'infra/docker-compose.yml'
+
+'database':
+  - head-branch: ['.*db.*']
+  - changed-files:
+    - any-glob-to-any-file: ['src/migrations/**']
+
+'go':
+  - changed-files:
+    - any-glob-to-any-file: ['src/**/*.go']
