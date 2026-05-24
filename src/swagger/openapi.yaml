@@ -217,6 +217,143 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /pins/{pin_id}/notes:
+    post:
+      tags:
+        - notes
+      summary: Add a note to a pin
+      operationId: createNote
+      parameters:
+        - name: pin_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target pin ID
+          example: "660e8400-e29b-41d4-a716-446655440001"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNoteRequest'
+      responses:
+        '201':
+          description: Note added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Pin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /pins/{pin_id}/notes/{note_id}:
+    patch:
+      tags:
+        - notes
+      summary: Update a note
+      operationId: updateNote
+      parameters:
+        - name: pin_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target pin ID
+          example: "660e8400-e29b-41d4-a716-446655440001"
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target note ID
+          example: "770e8400-e29b-41d4-a716-446655440002"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNoteRequest'
+      responses:
+        '200':
+          description: Note updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Pin or Note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - notes
+      summary: Delete a note from a pin
+      operationId: deleteNote
+      parameters:
+        - name: pin_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target pin ID
+          example: "660e8400-e29b-41d4-a716-446655440001"
+        - name: note_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target note ID
+          example: "770e8400-e29b-41d4-a716-446655440002"
+      responses:
+        '204':
+          description: Note deleted successfully
+        '404':
+          description: Pin or Note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /spots/search:
     get:
       tags:
@@ -394,6 +531,50 @@ components:
         colour:
           type: string
           example: "#3498DB"
+    Note:
+      type: object
+      required:
+        - id
+        - pin_id
+        - content
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "770e8400-e29b-41d4-a716-446655440002"
+        pin_id:
+          type: string
+          format: uuid
+          example: "660e8400-e29b-41d4-a716-446655440001"
+        content:
+          type: string
+          example: "Great view from the top!"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2025-01-01T00:00:00Z"
+    CreateNoteRequest:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          example: "Great view from the top!"
+    UpdateNoteRequest:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          example: "Updated note content"
     Spot:
       type: object
       required:
