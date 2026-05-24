@@ -1,0 +1,28 @@
+openapi: 3.0.3
+info:
+  title: Travellle API
+  description: REST API for Travellle travel planning app
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+tags:
+  - name: plans
+    description: Travel plan operations
+  - name: pins
+    description: Pin operations on plans
+  - name: notes
+    description: Note operations on pins
+  - name: spots
+    description: Spot search operations
+paths: {}
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "an error occurred"
