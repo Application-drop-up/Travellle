@@ -93,6 +93,97 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /plans/{plan_id}/pins/{pin_id}:
+    patch:
+      tags:
+        - pins
+      summary: Update pin category and/or colour
+      operationId: updatePin
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target plan ID
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        - name: pin_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target pin ID
+          example: "660e8400-e29b-41d4-a716-446655440001"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePinRequest'
+      responses:
+        '200':
+          description: Pin updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pin'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Plan or Pin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - pins
+      summary: Delete a pin from a plan
+      operationId: deletePin
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target plan ID
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        - name: pin_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Target pin ID
+          example: "660e8400-e29b-41d4-a716-446655440001"
+      responses:
+        '204':
+          description: Pin deleted successfully
+        '404':
+          description: Plan or Pin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /plans/{share_token}:
     get:
       tags:
