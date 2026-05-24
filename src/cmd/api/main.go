@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Application-drop-up/Travellle/internal/db"
+	"github.com/Application-drop-up/Travellle/internal/handler"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -20,6 +21,7 @@ func main() {
 	}
 
 	r := chi.NewRouter()
+	r.Get("/health", handler.Health)
 
 	log.Println("Server starting on :8080")
 	if err := http.ListenAndServe(":8080", r); err != nil {
