@@ -15,7 +15,40 @@ tags:
     description: Note operations on pins
   - name: spots
     description: Spot search operations
-paths: {}
+paths:
+  /spots/search:
+    get:
+      tags:
+        - spots
+      summary: Search spots using Google Places API
+      operationId: searchSpots
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search keyword for spot lookup
+          example: "Tokyo Tower"
+      responses:
+        '200':
+          description: Search results returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpotSearchResponse'
+        '400':
+          description: Missing or invalid query parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error or Google Places API error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     Error:
