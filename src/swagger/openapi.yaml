@@ -26,3 +26,38 @@ components:
         message:
           type: string
           example: "an error occurred"
+    Plan:
+      type: object
+      required:
+        - id
+        - share_token
+        - title
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        share_token:
+          type: string
+          example: "abc123xyz"
+        title:
+          type: string
+          example: "Tokyo Trip 2025"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2025-01-01T00:00:00Z"
+    CreatePlanRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          example: "Tokyo Trip 2025"
