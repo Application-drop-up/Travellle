@@ -26,3 +26,39 @@ components:
         message:
           type: string
           example: "an error occurred"
+    Spot:
+      type: object
+      required:
+        - place_id
+        - name
+        - address
+        - latitude
+        - longitude
+      properties:
+        place_id:
+          type: string
+          description: Google Places API place ID
+          example: "ChIJ51cu8IcbXWARiRtXIothAS4"
+        name:
+          type: string
+          example: "Tokyo Tower"
+        address:
+          type: string
+          example: "4 Chome-2-8 Shibakoen, Minato City, Tokyo 105-0011"
+        latitude:
+          type: number
+          format: double
+          example: 35.6586
+        longitude:
+          type: number
+          format: double
+          example: 139.7454
+    SpotSearchResponse:
+      type: object
+      required:
+        - spots
+      properties:
+        spots:
+          type: array
+          items:
+            $ref: '#/components/schemas/Spot'
