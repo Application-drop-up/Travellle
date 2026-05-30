@@ -5,14 +5,23 @@ import (
 
 	"github.com/Application-drop-up/Travellle/internal/handler"
 	"github.com/Application-drop-up/Travellle/internal/infrastructure/persistence"
+	noteuc "github.com/Application-drop-up/Travellle/internal/usecase/note"
+	pinuc "github.com/Application-drop-up/Travellle/internal/usecase/pin"
 	planuc "github.com/Application-drop-up/Travellle/internal/usecase/plan"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
 func New(db *sql.DB) *chi.Mux {
-	planRepo := persistence.NewPlanRepository(db)
-	planHandler := handler.NewPlanHandler(planuc.New(planRepo))
+	pinRepo := persistence.NewPinRepository(db)
+	noteRepo := persistence.NewNoteRepository(db)
+
+	pinUC := pinuc.New(pinRepo)
+	noteUC := noteuc.New(noteRepo)
+
+	planHandler := handler.NewPlanHandler(planuc.New(persistence.NewPlanRepository(db)), pinUC, noteUC)
+	pinHandler := handler.NewPinHandler(pinUC)
+	noteHandler := handler.NewNoteHandler(noteUC)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -22,6 +31,15 @@ func New(db *sql.DB) *chi.Mux {
 
 	r.Post("/plans", planHandler.Create)
 	r.Get("/plans/{share_token}", planHandler.GetByShareToken)
+
+	r.Get("/plans/{plan_id}/pins", pinHandler.List)
+	r.Post("/plans/{plan_id}/pins", pinHandler.Create)
+	r.Patch("/plans/{plan_id}/pins/{pin_id}", pinHandler.Update)
+	r.Delete("/plans/{plan_id}/pins/{pin_id}", pinHandler.Delete)
+
+	r.Post("/plans/{plan_id}/pins/{pin_id}/notes", noteHandler.Create)
+	r.Patch("/plans/{plan_id}/pins/{pin_id}/notes/{note_id}", noteHandler.Update)
+	r.Delete("/plans/{plan_id}/pins/{pin_id}/notes/{note_id}", noteHandler.Delete)
 
 	return r
 }
